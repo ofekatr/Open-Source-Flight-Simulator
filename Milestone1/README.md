@@ -1,1 +1,1 @@
-Text interpreter for converting code commands into flight simulator instructions - allowing remote control. Applies calculations via Shunting Yard Algorithm. Implements the Command design pattern.
+Written in C++. Text interpreter for converting code commands into flight simulator instructions - allowing remote control. Applies calculations via Shunting Yard Algorithm. Implements the Command design pattern.
