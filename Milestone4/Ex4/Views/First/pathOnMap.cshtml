@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "pathOnMap";
+}
+<!DOCTYPE html>
+<html>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    canvas.setAttribute('width', window.innerWidth);
+    canvas.setAttribute('height', window.innerHeight);
+    var IntervalTime = @Session["rate"] * 1000
+    var oldLon;
+    var oldLat;
+    var firstPoint = 1;
+    myTimer = (function () {
+        $.post("@Url.Action("GetXmlPosition")").done(function (xml) {            
+            var xmlDoc = $.parseXML(xml);
+            $xml = $(xmlDoc);
+            LatFromServer = $xml.find("lat").text();
+            LonFromServer = $xml.find("lon").text(); 
+            lon = ((parseFloat(LonFromServer) + 180) * (window.innerWidth / 360));
+            lat = ((parseFloat(LatFromServer) + 90) * (window.innerHeight / 180));
+            if (firstPoint == 1) {
+                drawFirstPoint(lon, lat);
+                oldLon = lon;
+                oldLat = lat;
+            } else {
+                drawLine(oldLon, oldLat, lat, lon);
+                oldLon = lon;
+                oldLat = lat;
+            }
+        });
+    });
+    setInterval(myTimer, IntervalTime);
+    myTimer();
+    function drawFirstPoint(Lon,Lat){
+        ctx.beginPath();
+        ctx.arc(lon, lat, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.strokeStyle = "blue";
+        ctx.stroke();
+        firstPoint = 0;
+    }
+    function saveData(oldLon, oldLat, newLat, newLon) {
+        oldLon = newLon;
+        oldLat = newLat;
+    }
+    function drawLine(oldLon, oldLat, newLat, newLon) {
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.lineWidth = 3;
+        ctx.moveTo(oldLon, oldLat);
+        ctx.lineTo(newLon, newLat);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+    }
+    </script>
+</body>
+</html>
