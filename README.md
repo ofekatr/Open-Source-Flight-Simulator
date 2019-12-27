@@ -8,6 +8,9 @@
 • Skills and Concepts:
 
   – Proficiency in procedural and event driven programming.
+  
   – Multi-Threading and concurrency patterns.
+  
   – MVC, MVVM, Client-Server architectural patterns.
+  
   – SSSP algorithms including A-Star, Best First Search, DFS, BFS.
